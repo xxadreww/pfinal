@@ -8,18 +8,21 @@
 
 struct Login
 {
-  char fname[LONG_STRING];
-  char lname[LONG_STRING];
   char username[SHORT_STRING];
   char password[SHORT_STRING];
 };
 
 int handleMainMenu();
 int handleloginMenu();
-void menuarchivo();
-void menumovimientos();
-void menuayuda();
+int menuarchivo();
+int menumovimientos();
+int menuayuda();
 void registration();
+void usuarios();
+void clientes();
+void productos();
+void factura();
+void reportedefacturas();
 int login();
 
 enum
@@ -52,7 +55,7 @@ int handleloginMenu()
   int choice;
   while ( 1 )
   {
-    printf("\n\nMenu de registro y login!!!\n");
+    printf("\n\nMenu de registro y login\n");
     printf("\n");
     printf("\n1 : Registro!!!\n");
     printf("2 : Login!!!\n");
@@ -118,38 +121,152 @@ int handleMainMenu()
   }
 } 
 
-void menuarchivo()
+int menuarchivo()
 {
-	printf("\nMenu archivo\n");
+	int choice;
+  while ( 1 )
+  {
+    printf("Submenu archivo\n");
+    printf("\n");
+    printf("\n1 : Usuarios\n");
+    printf("2 : Clientes\n");
+    printf("3 : Productos\n");
+    printf("4 : Salir\n");
+    printf("Ingrese su eleccion: \n");
+
+    if ( scanf("%d", &choice) == 1)
+    {
+      switch ( choice)
+      {
+      case 1:
+        usuarios();
+        break;
+      case 2:
+        clientes();
+        break;
+      case 3:
+        productos();
+        break;
+      case 4:
+        printf("Gracias por elegirnos!! \n");
+        return EXIT;
+      default:
+        printf("Eleccion invalida, por favor ingrese un numero valido\n");
+        break;
+      }
+    }
+  }
 }
 
-void menumovimientos()
+int menumovimientos()
 {
-	printf("\nMenu movimientos\n");
-	
+	int choice;
+  while ( 1 )
+  {
+    printf("Submenu movimientos\n");
+    printf("\n");
+    printf("\n1 : Nueva factura\n");
+    printf("2 : Reporte de facturas\n");
+    printf("3 : Salir\n");
+    printf("Ingrese su eleccion: \n");
+
+    if ( scanf("%d", &choice) == 1)
+    {
+      switch ( choice)
+      {
+      case 1:
+        factura();
+        break;
+      case 2:
+        reportedefacturas();
+        break;
+      case 3:
+        printf("Gracias por elegirnos!! \n");
+        return EXIT;
+      default:
+        printf("Eleccion invalida, por favor ingrese un numero valido\n");
+        break;	
+      }
+    }
+  }
 }
-void menuayuda()
+
+int menuayuda()
 {
-	printf("\nMenu ayuda\n");
+	int choice;
+  while ( 1 )
+  {
+    printf("Submenu ayuda\n");
+    printf("\n");
+    printf("\n1 : Nombre del sistema\n");
+    printf("2 : Informacion de los autores\n");
+    printf("3 : Año y semestre\n");
+    printf("4 : Salir\n");
+    printf("Ingrese su eleccion: \n");
+
+    if ( scanf("%d", &choice) == 1)
+    {
+      switch ( choice)
+      {
+      case 1:
+        printf("\nXXXXXXXXXXXXXXXX\n");
+        break;
+      case 2:
+        printf("\nXXXXXXXXXXXXXXXX\n");
+        break;
+      case 3:
+      	printf("\nXXXXXXXXXXXXXXXX\n");
+      	break;
+      case 4:
+        printf("Gracias por elegirnos!! \n");
+        return EXIT;
+      default:
+        printf("Eleccion invalida, por favor ingrese un numero valido\n");
+        break;
+       }
+    }
+  }
 }
+
+void usuarios()
+{
+	printf("\nusuarios\n");
+}
+
+void clientes()
+{
+	printf("\nclientes\n");
+}
+
+void productos()
+{
+	printf("\nproductos\n");
+}
+
+void factura()
+{
+	printf("\nfactura\n");
+}
+
+void reportedefacturas()
+{
+	printf("\nreporte de facturas\n");
+}
+
 
 void registration()
 {
   FILE *log = fopen("login.txt", "a+");
   struct Login l;
-  printf("\nIngrese su primer nombre : ");
-  scanf("%s", (l.fname));
-  printf("\nIngrese su apellido : ");
-  scanf("%s", l.lname);
   printf("\nIngrese un usuario : ");
   scanf("%s", l.username);
-  printf("\nIngrese una contraseña : ");
+  printf("\nIngrese una contrasena : ");
   scanf("%s", l.password);
   fwrite(&l, sizeof(l), 1, log);
   fclose(log);
   printf("\nSe ha registrado satisfactoriamente!!");
-  printf("\nTu UserId es %s y tu contraseña es %s", l.username, l.password);
-  printf("\nAhora ingresa con tu usuario y contraseña!!");
+  printf("\nTu UserId es %s y tu contrasena es %s", l.username, l.password);
+  printf("\nAhora ingresa con tu usuario y contrasena!!");
   printf("\nPresiona cualquier tecla para continuar ...");
   getchar();
 }
@@ -162,7 +279,7 @@ int login()
   if (log == NULL)
   {
     printf("ARCHIVO NO ENCONTRADO!!!\n");
-    return 0; // login failed
+    return 0;
   }
   printf("\nUserID : ");
   scanf("%s", linput.username);
@@ -175,12 +292,11 @@ int login()
     {
       printf("\nHa ingresado satisfactoriamente !!\n");
       fclose(log);
-      return 1; // login succeeded
+      return 1; 
     }
   }
-  printf("\nSu usuario o contraseña es incorrecta !!\n");
-  printf("Presiona cualquier tecla para continuar ...\n");
+  printf("\nSu usuario o contrasena es incorrecta !!\n");
   getchar();
   fclose(log);
-  return 0; // login failed
+  return 0; 
 }
