@@ -117,7 +117,7 @@ int subMenuPrincipal(){
 int menuarchivo(){ // // Apartado de archivos del menu de opciones a elegir sobre usuarios/clientes/productos
 	int opcion=0;
   while(1){
-    printf("Actualmente te encuentras en el apartado de Archivos\n---\n1: Usuarios.\n2: Clientes\n3: Productos\n4: Salir\n---\nDigita la opcion de tu preferencia: ");
+    printf("\n---Archivos---\n\n 1: Usuarios.\n2: Clientes\n3: Productos\n4: Salir\n---\nDigita la opcion de tu preferencia: ");
 
     if (scanf("%d", &opcion)==1)
     {
@@ -132,8 +132,7 @@ int menuarchivo(){ // // Apartado de archivos del menu de opciones a elegir sobr
         productos();
         break;
       case 4:
-        printf("Gracias por elegirnos\n");
-        return salir;
+        return subMenuPrincipal();
       default:
         printf("Eleccion invalida, por favor ingrese un numero valido\n");
         break;
@@ -146,7 +145,7 @@ int menumovimientos(){ // Apartado de movimientos del menu de opciones a elegir 
 	int opcion;
   while (1)
   {
-    printf("Actualmente te encuentras en el apartado de Movimientos\n---\n1: Nueva factura.\n2: Reporte de facturas.\n3: Salir.\n---\nDigita la opcion de tu preferencia: ");
+    printf("Actualmente te encuentras en el apartado de Movimientos---\n\n 1: Nueva factura.\n2: Reporte de facturas.\n3: Salir.\n---\nDigita la opcion de tu preferencia: ");
 
     if (scanf("%d", &opcion)==1){
       switch ( opcion){
@@ -157,8 +156,7 @@ int menumovimientos(){ // Apartado de movimientos del menu de opciones a elegir 
         reportedefacturas();
         break;
       case 3:
-        printf("Gracias por elegirnos\n");
-        return salir;
+        return subMenuPrincipal();
       default:
         printf("Eleccion invalida, por favor ingrese un numero valido\n");
         break;	
@@ -175,23 +173,30 @@ int menuayuda(){
     if (scanf("%d", &opcion)==1){
       switch(opcion){
       case 1:
-        printf("\nXXXXXXXXXXXXXXXX\n");
+      	system("cls");
+        printf("\n--- NOMBRE DEL SISTEMA ---\n\n*Technology Shop*\n\n");
         break;
+        
       case 2:
-        printf("\nXXXXXXXXXXXXXXXX\n");
+      	system("cls");
+        printf("\n--- Nombre de los Creadores ---\n\n*Aldana Eliannis      \n*Martinez Fabiana         CI: 304987516\n*Moya Enyer         CI: 30498773\n*Pulido Alejandro        CI: 30576458 \n*Isea Francisco        CI: 30293487\n\n");
         break;
+        
       case 3:
-      	printf("\nXXXXXXXXXXXXXXXX\n");
+      	system("cls");
+      	printf("\n--- A%co y Semestre cursado ---\n\n SEMESTRE II (2)\n\n A%co: 2022\n\n", 164,164);
+      	
       	break;
       case 4:
-        printf("Gracias por elegirnos!! \n");
-        return salir;
+        return subMenuPrincipal();
       default:
         printf("Eleccion invalida, por favor ingrese un numero valido\n");
         break;
        }
     }
+    
   }
+  
 }
 
 void usuarios(){
