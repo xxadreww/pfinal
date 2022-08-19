@@ -415,7 +415,7 @@ void registroUsuario() //funcion para el registro de usuarios
   fclose(log);
   printf("\n---\nSe ha registrado satisfactoriamente\n---");
   printf("\nTu nombre de usuario es: (%s) y tu clave de acceso es: (%s)\n---", l.username, l.clave); //usuario registrado
-  printf("\nAhora ingresa con tu usuario y clave a la tienda para tu compra\n---\nSeras redireccionado al menu principal para tu logueo de usuario\n---\n");
+  printf("\nAhora ingresa con tu usuario y clave a la tienda para tu compra\n---\nSerás redireccionado al menu principal para tu logueo de usuario\n---\n");
   system("pause");
   system("cls");
   getchar();
