@@ -1,22 +1,23 @@
+//Programa de venta de productos
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
 
 //login-registro
-#define cadena_corta  20
-#define filas 5
-#define columnas 10 //definimos variables globales
+#define CADENA_CORTA  20
+#define FILAS 5
+#define COLUMNAS 10 //definimos variables globales
 
 //productos
-#define maximacadena 1000
-#define maximaventa 1000
-#define maximoproducto 100
+#define MAXIMA_CADENA 1000
+#define MAXIMA_VENTA 1000
+#define MAXIMO_PRODUCTO 100
 
 struct Login // se crea la estructura del área de login
 {
-  char username[cadena_corta];
-  char clave[cadena_corta];
+  char username[CADENA_CORTA];
+  char clave[CADENA_CORTA];
 };
 // VARIABLES GLOBALES //
 int menuPrincipal(); //variables locales con volcado
@@ -44,12 +45,13 @@ char letrann[10]="Letra \xA4";
 typedef struct {
 	char descripcionpr[20];
 	float preciouni;
-	int codigopr, existepr;
+	int codigopr, existepr; 
+	int borrarpr; // en borrarpr es 0=existe 1=borrado
 } inventario;
 // FIN ESTRUCTURA DEL INVENTARIO DE PRODUCTOS
 
 struct unproducto{
-	char nombrepr[maximacadena];
+	char nombrepr[MAXIMA_CADENA];
 	int cantidadpr, preciopr;
 };
 
@@ -62,7 +64,7 @@ enum // se declaran las variables principales
 int main()
 {
   int estadoUsuario=ulogout;
-  int seat[filas][columnas]={0};
+  int seat[FILAS][COLUMNAS]={0};
   while(estadoUsuario != salir)
   {
     if(estadoUsuario==ulogout)
@@ -290,6 +292,7 @@ void crearpr(){
 	printf("Ingresa el PRECIO de unidad del producto:\n");
 	fflush(stdin);
 	scanf("%f", &inve.preciouni);
+	inve.borrarpr=0;
 	fwrite(&inve,sizeof(inve),1,crearproducto);
 	fclose(crearproducto);
 	printf("El producto se ha registrado satisfactoriamente\n");
@@ -314,17 +317,17 @@ void mostrarpr(){
     return productos(); 
 }
     fread(&inve, sizeof(inve), 1, crearproducto);
-    if (inve.codigopr, inve.descripcionpr, inve.existepr, inve.preciouni){
   printf("Actualmente te encuentras en el apartado de los Productos Disponibles.\n---\n\t*** PRODUCTOS DISPONIBLES ***\n---\n");
-  while(feof(crearproducto)==0){
+  while(!feof(crearproducto)){
+  	if(inve.borrarpr==0){
    printf("Codigo del Producto: %i\nNombre del producto: %s\nCantidad disponible del Producto: %i\nPrecio del producto: %0.2f$\n---\n", inve.codigopr, inve.descripcionpr, inve.existepr, inve.preciouni);
+		}
 	fread(&inve, sizeof(inve), 1, crearproducto);
 	}
   system("pause");
     fclose(crearproducto);
  	 return productos();
   system("cls");
-	}
 }
 
 // FIN DE LA FUNCIÓN DE MOSTRAR PRODUCTOS EN EL LOTE //
@@ -345,7 +348,7 @@ void editarpr(){
     scanf("%i", &codigo);
     while(!feof(crearproducto)){
 		fread(&inve,sizeof(inventario),1,crearproducto);
-       	if (codigo==inve.codigopr){
+       	if (codigo==inve.codigopr&&inve.borrarpr==0){
 		   printf("---\nCodigo del Producto: %i\nNombre del producto: %s\nCantidad disponible del Producto: %i\nPrecio del producto: %0.2f$\n---\n", inve.codigopr, inve.descripcionpr, inve.existepr, inve.preciouni);
 				printf("Ingrese nuevo precio:\n");
 			fflush(stdin);
@@ -355,7 +358,7 @@ void editarpr(){
         fwrite(&inve, sizeof(inventario), 1, crearproducto);
     	printf("Se modifico el precio para dicho producto.\n");
   		}
-        if (codigo==inve.codigopr){
+        if (codigo==inve.codigopr&&inve.borrarpr==0){
            	printf("Ingrese nueva cantidad disponible:\n");
            	fflush(stdin);
            	scanf("%i", &inve.existepr);
@@ -384,14 +387,59 @@ void editarpr(){
 
 // INICIO DE LA FUNCIÓN DE ELIMINAR UN PRODUCTO A TRAVÉS DE SU CÓDIGO //
 void eliminarpr(){
-	
-	
+	    FILE*crearproducto;
+    crearproducto=fopen("inventario.txt","r+b");
+    if (crearproducto==NULL){
+        return productos();
+    }
+    system("cls");
+    inventario inve;
+    	printf("Actualmente te encuentras en el apartado de eliminacion de productos.\n---\n\a\a\a\t***ATENCION***\n***ESCOGE EL CODIGO DEL PRODUCTO CON CUIDADO***.\n---\nIngrese el codigo de producto a borrar:\n---\n");
+	int existeprbrr=0, codigoprbrr, opcionbrr=0;
+	fflush(stdin);
+    scanf("%i", &codigoprbrr);
+    fread(&inve,sizeof(inventario),1,crearproducto);
+    while (!feof(crearproducto)){
+    	if (codigoprbrr==inve.codigopr&&inve.borrarpr==0){
+    		printf("Estas seguro que deseas borrar el producto: %d.\n1. Si.\n2. No.\nDigite la opcion de su preferencia:\n", inve.codigopr);
+    		scanf("%d", &opcionbrr);
+    		switch (opcionbrr){
+    			case 1:
+    		inve.borrarpr=1;
+    		int pos=ftell(crearproducto)-sizeof(inventario);
+    		fseek(crearproducto,pos,SEEK_SET);
+   			fwrite(&inve, sizeof(inventario),1,crearproducto);
+    		printf("Se ha eliminado el producto con exito.\n");
+    		existeprbrr=1;
+    		fclose(crearproducto);
+    		system("pause");
+  			productos();
+  				case 2:
+  			system("pause");
+  			break;
+  			productos();
+  				default:
+  			printf("Digite una opcion valida.\n");
+  			system("pause");
+  			break;
+			}
+  		}
+  	fread(&inve,sizeof(inventario),1,crearproducto);
+    	}
+    if (existeprbrr==0)
+        printf("No existe un producto con dicho codigo\n");
+   		fclose(crearproducto);
+   		system("pause");
+   		productos();
 }
 // FIN DE LA FUNCIÓN DE ELIMINAR PRODUCTO A TRAVÉS DE SU CÓDIGO //
 
+
+// INICIO DE LA FUNCIÓN REPORTE DE PRODUCTO //
 void reportepr(){
 	printf("XXXXXXXXXXXX");
 }
+// FIN DE LA FUNCIÓN REPORTE DE PRODUCTO //
 
 void factura(){
 	printf("\nfactura\n");
@@ -415,7 +463,7 @@ void registroUsuario() //funcion para el registro de usuarios
   fclose(log);
   printf("\n---\nSe ha registrado satisfactoriamente\n---");
   printf("\nTu nombre de usuario es: (%s) y tu clave de acceso es: (%s)\n---", l.username, l.clave); //usuario registrado
-  printf("\nAhora ingresa con tu usuario y clave a la tienda para tu compra\n---\nSerás redireccionado al menu principal para tu logueo de usuario\n---\n");
+  printf("\nAhora ingresa con tu usuario y clave a la tienda para tu compra\n---\nSeras redireccionado al menu principal para tu logueo de usuario\n---\n");
   system("pause");
   system("cls");
   getchar();
